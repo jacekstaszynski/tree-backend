@@ -1,11 +1,13 @@
 import App from "@/app";
-import BedRoute from "@routes/bed.route";
 import validateEnv from "@utils/validateEnv";
 import UserRoute from "@routes/user.route";
 import AuthRoute from "@routes/auth.route";
+import { run } from "./run";
 
 validateEnv();
 
-const app = new App([new BedRoute(), new UserRoute(), new AuthRoute()]);
+const app = new App([new UserRoute(), new AuthRoute()]);
+
+run().catch(err => console.log(err));
 
 app.listen();

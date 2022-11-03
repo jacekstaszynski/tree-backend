@@ -1,8 +1,8 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import {SECRET} from "@config";
-import {User} from "@models/user.model";
-import {HttpException} from "@exceptions/HttpException";
+import { SECRET } from "@config";
+import { User } from "@models/user.model";
+import { HttpException } from "@exceptions/HttpException";
 
 export const extractJWT = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -15,14 +15,14 @@ export const extractJWT = async (req: Request, res: Response, next: NextFunction
         }
 
         if (!access_token) {
-            return next(new HttpException(401, 'Хүчингүй хандалт. Дахин нэвтэрнэ үү.'));
+            return next(new HttpException(401, 'Invalid access. Please login again.'));
         }
 
         // Validate Access Token
         const decoded = verifyJwt<{ user: User }>(access_token);
 
         if (!decoded) {
-            return next(new HttpException(401, 'Хүчингүй хандалт. Дахин нэвтэрнэ үү.'));
+            return next(new HttpException(401, 'Invalid access. Please login again.'));
         }
 
         res.locals.user = decoded.user;
@@ -34,7 +34,7 @@ export const extractJWT = async (req: Request, res: Response, next: NextFunction
 }
 
 export const signJWT = (user: User) => {
-    return jwt.sign({user}, SECRET, {expiresIn: "1h"});
+    return jwt.sign({ user }, SECRET, { expiresIn: "1h" });
 }
 
 export const verifyJwt = <T>(token: string): T | null => {

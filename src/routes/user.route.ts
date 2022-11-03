@@ -1,8 +1,8 @@
-import {Routes} from "@interfaces/routes.interface";
+import { Routes } from "@interfaces/routes.interface";
 import express from "express";
 import UserController from "@controllers/user.controller";
-import {extractJWT} from "@middlewares/jwt.middleware";
-import {requireUser} from "@middlewares/require.middleware";
+import { extractJWT } from "@middlewares/jwt.middleware";
+import { requireUser } from "@middlewares/require.middleware";
 
 export default class UserRoute implements Routes {
     public path = "/user";
