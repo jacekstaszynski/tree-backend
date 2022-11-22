@@ -1,13 +1,18 @@
 import App from "@/app";
 import validateEnv from "@utils/validateEnv";
-import UserRoute from "@routes/user.route";
-import AuthRoute from "@routes/auth.route";
-import { run } from "./run";
+import { initialDbRun } from "./run";
+import TreeRouter from "./routes/tree.route";
+import { TreeModel } from "./models/tree.model";
 
 validateEnv();
 
-const app = new App([new UserRoute(), new AuthRoute()]);
 
-run().catch(err => console.log(err));
+const app = new App([new TreeRouter()]);
+TreeModel.remove()
+initialDbRun().catch(err => console.log(err));
 
+app.express.get('/', (req, res) => {
+    res.send('hello world')
+})
 app.listen();
+

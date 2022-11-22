@@ -9,32 +9,29 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { dbConnection } from '@databases';
-import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
-import { Schema, model, connect, set } from 'mongoose';
-import { run } from './run';
+import { connect, set } from 'mongoose';
+import { Routes } from './interfaces/routes.interface';
 
 class App {
-    public app: express.Application;
+    public express: express.Application;
     public env: string;
     public port: string | number;
 
     constructor(routes: Routes[]) {
-        this.app = express();
+        this.express = express();
         this.env = NODE_ENV || 'development';
         this.port = PORT || 3000;
 
-        this.connectToDatabase();
-
-
+        this.connectToDatabase()
         this.initializeRoutes(routes);
-        // this.initializeMiddlewares();
+        this.initializeMiddlewares();
         //  this.initializeSwagger();
         // this.initializeErrorHandling();
     }
     public listen() {
-        this.app.listen(this.port, () => {
+        this.express.listen(this.port, () => {
             logger.info(`=================================`);
             logger.info(`======= ENV: ${this.env} =======`);
             logger.info(`🚀 App listening on the port ${this.port}`);
@@ -42,30 +39,36 @@ class App {
         });
     }
 
-    private async connectToDatabase() {
+    private connectToDatabase() {
         if (this.env !== 'production') {
             set('debug', true);
         }
 
-        await connect(dbConnection.url, dbConnection.options as any, () => {
+        connect(dbConnection.url, dbConnection.options as any, () => {
             logger.info('🚀 MongoDB connected ' + dbConnection.url);
             logger.info(`=================================`);
         });
     }
 
     private initializeRoutes(routes: Routes[]) {
-        routes.forEach(route => this.app.use('/', route.router));
+        routes.forEach(route => this.express.use('/', route.router));
     }
 
     private initializeMiddlewares() {
-        this.app.use(morgan(LOG_FORMAT, { stream }));
-        this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
-        this.app.use(hpp());
-        this.app.use(helmet());
-        this.app.use(compression());
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
-        this.app.use(cookieParser());
+        this.express.use((req, res, next) => {
+            console.log(`Incomming -> method [${req.method}] - url: [${req.url} - ip: [${req.socket.remoteAddress}]`)
+            next();
+        })
+        this.express.use(morgan(LOG_FORMAT, { stream }));
+        this.express.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+        // this.express.use(hpp());
+        // this.express.use(helmet());
+        // this.express.use(compression());
+        this.express.use(express.json());
+        this.express.use(express.urlencoded({ extended: true }));
+        this.express.use(cookieParser());
+
+
     }
 
     private initializeSwagger() {
@@ -85,11 +88,11 @@ class App {
         };
 
         const specs = swaggerJSDoc(options);
-        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+        this.express.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
     }
 
     private initializeErrorHandling() {
-        this.app.use(errorMiddleware);
+        this.express.use(errorMiddleware);
     }
 }
 

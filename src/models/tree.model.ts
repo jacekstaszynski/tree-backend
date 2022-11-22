@@ -1,12 +1,12 @@
 import { Document, model, Schema } from "mongoose";
 
-export interface Tree {
+export interface ITree {
     name: string;
 }
 
-export const TreeSchema: Schema = new Schema<Tree>({
+export const TreeSchema: Schema = new Schema<ITree>({
     name: { type: String, required: true }
 })
 
 
-export const TreeModel = model<Tree & Document>('Tree', TreeSchema);
+export const TreeModel = model<ITree & Document>('Tree', TreeSchema);
