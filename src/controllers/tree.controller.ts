@@ -1,14 +1,14 @@
 
-import TreeService from "@/services/tree.service";
+import TreeModel, { Tree } from "@/models/tree.model";
 import { NextFunction, Request, Response } from "express";
-import {
-    TreeModel
-} from "@/models/tree.model";
+import { toNamespacedPath } from "path";
+
 export default class TreeController {
-    public service = new TreeService();
 
     public create = async (req: Request, res: Response, next: NextFunction) => {
-
+        const { name, ownerId, imgUrl } = req.body
+        const tree = new Tree(name, ownerId, imgUrl)
+        return TreeModel.create(tree)
     }
     public findAll = async (req: Request, res: Response, next: NextFunction) => {
         return TreeModel.find()
@@ -20,6 +20,14 @@ export default class TreeController {
     public findByName = async (req: Request, res: Response, next: NextFunction) => {
         const name = req.params.name
         return TreeModel.find({ name: name })
+            .then(trees => res.status(200).json({ trees }))
+            .catch(error => res.status(500).json({ error }))
+
+    }
+
+    public findByOwner = async (req: Request, res: Response, next: NextFunction) => {
+        const ownerId = req.params.ownerId
+        return TreeModel.find({ ownerId: ownerId })
             .then(trees => res.status(200).json({ trees }))
             .catch(error => res.status(500).json({ error }))
 

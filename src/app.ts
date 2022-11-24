@@ -27,8 +27,9 @@ class App {
         this.connectToDatabase()
         this.initializeRoutes(routes);
         this.initializeMiddlewares();
+        this.initializeErrorHandling();
         //  this.initializeSwagger();
-        // this.initializeErrorHandling();
+
     }
     public listen() {
         this.express.listen(this.port, () => {

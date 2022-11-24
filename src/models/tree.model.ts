@@ -1,12 +1,20 @@
-import { Document, model, Schema } from "mongoose";
+import { getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
 
-export interface ITree {
-    name: string;
+@modelOptions({ schemaOptions: { timestamps: true, }, })
+export class Tree {
+    constructor(name, ownerId, imgUrl) {
+        this.name = name
+        this.ownerId = ownerId
+        this.imgUrl = imgUrl
+    }
+    @prop({ unique: true, required: true })
+    name: String;
+    @prop({ required: true })
+    ownerId: String;
+    @prop({ unique: true, required: true })
+    imgUrl: String;
 }
 
-export const TreeSchema: Schema = new Schema<ITree>({
-    name: { type: String, required: true }
-})
+const TreeModel = getModelForClass(Tree)
 
-
-export const TreeModel = model<ITree & Document>('Tree', TreeSchema);
+export default TreeModel
