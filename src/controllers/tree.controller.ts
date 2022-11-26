@@ -1,33 +1,48 @@
 
 import TreeModel, { Tree } from "@/models/tree.model";
+import TreeService from "@/services/tree.service";
 import { NextFunction, Request, Response } from "express";
 
 export default class TreeController {
 
+    public treeService = new TreeService()
     public create = async (req: Request, res: Response, next: NextFunction) => {
-        const { name, ownerId, imgUrl } = req.body
-        const tree = new Tree(name, ownerId, imgUrl)
-        return TreeModel.create(tree)
+        try {
+            const tree: Tree = req.body
+            const model = await this.treeService.create(tree)
+            res.status(200).json({ model })
+        } catch (error) {
+            next(error)
+        }
     }
+
     public findAll = async (req: Request, res: Response, next: NextFunction) => {
-        return TreeModel.find()
-            .then(trees => res.status(200).json({ trees }))
-            .catch(error => res.status(500).json({ error }))
+        try {
+            const models = await this.treeService.findAll()
+            res.status(200).json({ models })
+        } catch (error) {
+            next(error)
+        }
     }
 
     public findByName = async (req: Request, res: Response, next: NextFunction) => {
-        const name = req.params.name
-        return TreeModel.find({ name: name })
-            .then(trees => res.status(200).json({ trees }))
-            .catch(error => res.status(500).json({ error }))
-
+        try {
+            const name = req.params.name
+            const models = await this.treeService.findByName(name)
+            res.status(200).json({ models })
+        } catch (error) {
+            next(error)
+        }
     }
 
     public findByOwner = async (req: Request, res: Response, next: NextFunction) => {
-        const ownerId = req.params.ownerId
-        return TreeModel.find({ ownerId: ownerId })
-            .then(trees => res.status(200).json({ trees }))
-            .catch(error => res.status(500).json({ error }))
+        try {
+            const ownerId = req.params.ownerId
+            const models = await this.treeService.findByOwner(ownerId)
+            res.status(200).json({ models })
+        } catch (error) {
+            next(error)
+        }
 
     }
 

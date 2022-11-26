@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
-import { dbConnection } from '@databases';
+import { dbConnection } from '@/databases';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import { connect, set } from 'mongoose';

@@ -1,22 +1,23 @@
-import { getModelForClass, modelOptions, prop, Ref } from "@typegoose/typegoose";
-import { Types } from "mongoose";
+
+import { Document, model, Schema } from "mongoose";
 import { Tree } from "./tree.model";
 
-// TODO: change lib to mongoose
-@modelOptions({ schemaOptions: { timestamps: true, }, })
-export class RawImage {
-    constructor() {
-    }
-    @prop({ type: Types.ObjectId })
-    _id: Types.ObjectId;
-    @prop({ unique: true })
-    geolocationX: Number
-    @prop({ unique: true })
-    geolocationY: Number
-    @prop()
-    rawImage: Buffer
-    @prop({ ref: () => Tree })
-    trees: Ref<Tree>[]
+export interface RawImage {
+    geolocationX: Number,
+    geolocationY: Number,
+    image: Buffer
+    trees: Tree[]
 }
 
-const RawImageModel = getModelForClass(RawImage)
+const rawImageSchema = new Schema<RawImage>({
+    geolocationX: { type: Number },
+    geolocationY: { type: Number },
+    image: { type: Buffer },
+    trees: [{
+        type: Schema.Types.ObjectId,
+        ref: "Tree"
+    }]
+})
+
+const RawImageModel = model<RawImage & Document>("RawImage", rawImageSchema)
+export default RawImageModel
