@@ -13,7 +13,6 @@ export class RawImage {
     geolocationX: Number
     @prop({ unique: true })
     geolocationY: Number
-    //TODO: extend image as a separate type
     @prop()
     rawImage: Buffer
     @prop({ ref: () => Tree })

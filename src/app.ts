@@ -1,18 +1,12 @@
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
-import helmet from 'helmet';
-import hpp from 'hpp';
-import morgan from 'morgan';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { dbConnection } from '@databases';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import { connect, set } from 'mongoose';
 import { Routes } from './interfaces/routes.interface';
+import morgan from 'morgan';
 
 class App {
     public express: express.Application;
@@ -57,6 +51,7 @@ class App {
     }
 
     private initializeMiddlewares() {
+        this.express.use(morgan(LOG_FORMAT, { stream }));
         this.express.use((req, res, next) => {
             console.log(`Incomming -> method [${req.method}] - url: [${req.url} - ip: [${req.socket.remoteAddress}]`)
             next();
