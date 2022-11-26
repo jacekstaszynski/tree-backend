@@ -5,6 +5,7 @@
   "author": "greemoose",
   "license": "greemoose",
   "scripts": {
+    "dev2": "NODE_ENV=development nodemon dist/server.js",
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "swc src -d dist --source-maps --copy-files",

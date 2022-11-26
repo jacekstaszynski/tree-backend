@@ -1,7 +1,6 @@
 
 import TreeModel, { Tree } from "@/models/tree.model";
 import { NextFunction, Request, Response } from "express";
-import { toNamespacedPath } from "path";
 
 export default class TreeController {
 
@@ -15,7 +14,6 @@ export default class TreeController {
             .then(trees => res.status(200).json({ trees }))
             .catch(error => res.status(500).json({ error }))
     }
-
 
     public findByName = async (req: Request, res: Response, next: NextFunction) => {
         const name = req.params.name

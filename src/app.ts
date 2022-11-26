@@ -28,8 +28,9 @@ class App {
         this.initializeRoutes(routes);
         this.initializeMiddlewares();
         this.initializeErrorHandling();
-        //  this.initializeSwagger();
-
+    }
+    initializeErrorHandling() {
+        this.express.use(errorMiddleware);
     }
     public listen() {
         this.express.listen(this.port, () => {
@@ -60,40 +61,8 @@ class App {
             console.log(`Incomming -> method [${req.method}] - url: [${req.url} - ip: [${req.socket.remoteAddress}]`)
             next();
         })
-        this.express.use(morgan(LOG_FORMAT, { stream }));
         this.express.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
-        // this.express.use(hpp());
-        // this.express.use(helmet());
-        // this.express.use(compression());
         this.express.use(express.json());
-        this.express.use(express.urlencoded({ extended: true }));
-        this.express.use(cookieParser());
-
-
-    }
-
-    private initializeSwagger() {
-        const options = {
-            swaggerDefinition: {
-                info: {
-                    title: 'REST API',
-                    version: '1.0.0',
-                    description: 'Example docs',
-                    contact: {
-                        name: "Bayarkhuu.Luv @mitpcllc"
-                    }
-                },
-            },
-            apis: ['swagger.yaml'],
-            servers: ["http://localhost:3000"]
-        };
-
-        const specs = swaggerJSDoc(options);
-        this.express.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-    }
-
-    private initializeErrorHandling() {
-        this.express.use(errorMiddleware);
     }
 }
 
