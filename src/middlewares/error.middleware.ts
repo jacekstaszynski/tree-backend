@@ -15,15 +15,12 @@ const errorMiddleware = (exception: HttpException, req: Request, res: Response, 
                 return res.status(406).json({ type: ErrorInterface.DUPLICATION, field: exception.keyValue });
             }
         }
-
         else {
             const status: number = exception.status || 500;
             const message: string = exception.message || 'Unknown exception';
-
             logger.error(`[${req.method}] ${req.path} >> StatusCode:: ${status}, Message:: ${message}`);
             return res.status(status).json({ message });
         }
-
         return res.status(500).json({ message: 'Unknown exception' });
     } catch (error) {
         next(error);
