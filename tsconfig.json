@@ -24,7 +24,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "importHelpers": true,
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "paths": {
       "@/*": [
         "*"
@@ -70,6 +70,6 @@
     "node_modules",
     "src/http",
     "src/logs",
-    "src/tests"
+    "src/__tests"
   ]
 }

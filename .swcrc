@@ -1,4 +1,11 @@
 {
+  "exclude": [
+    "./src/**/.*.spec.ts$",
+    "./**/.*.spec.ts$",
+    "./src/**/jest-setup.ts$",
+    "./**/jest-setup.ts$",
+    "./**/.*.js$"
+  ],
   "jsc": {
     "parser": {
       "syntax": "typescript",
@@ -20,18 +27,42 @@
     },
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"],
-      "@config": ["config"],
-      "@controllers/*": ["controllers/*"],
-      "@databases": ["databases"],
-      "@dtos/*": ["dtos/*"],
-      "@exceptions/*": ["exceptions/*"],
-      "@interfaces/*": ["interfaces/*"],
-      "@middlewares/*": ["middlewares/*"],
-      "@models/*": ["models/*"],
-      "@routes/*": ["routes/*"],
-      "@services/*": ["services/*"],
-      "@utils/*": ["utils/*"]
+      "@/*": [
+        "*"
+      ],
+      "@config": [
+        "config"
+      ],
+      "@controllers/*": [
+        "controllers/*"
+      ],
+      "@databases": [
+        "databases"
+      ],
+      "@dtos/*": [
+        "dtos/*"
+      ],
+      "@exceptions/*": [
+        "exceptions/*"
+      ],
+      "@interfaces/*": [
+        "interfaces/*"
+      ],
+      "@middlewares/*": [
+        "middlewares/*"
+      ],
+      "@models/*": [
+        "models/*"
+      ],
+      "@routes/*": [
+        "routes/*"
+      ],
+      "@services/*": [
+        "services/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ]
     }
   },
   "module": {

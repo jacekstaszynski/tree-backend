@@ -1,6 +1,6 @@
 
+import { NoMintableTreeError } from "@/exceptions/NoMintableTreeError"
 import TreeModel, { Tree } from "@/models/tree.model"
-import { ClientSession } from "mongoose"
 
 export default class TreeService {
 
@@ -13,12 +13,16 @@ export default class TreeService {
 
     // TODO: move to separate service/usecase if neccessary
     public mint = async (ownerId: String): Promise<Tree> => {
-        const tree = await this.findTreeWithoutOwner()
+        await this.findMintableTree().catch().then()
+        const tree = await this.findMintableTree()
         tree.ownerId = ownerId
         return this.update(tree)
     }
-    public findTreeWithoutOwner = async (): Promise<Tree> => {
-        return TreeModel.findOne({ ownerId: { $eq: "" }, imgUrl: { $exists: true } })
+    public findMintableTree = async (): Promise<Tree> => {
+        return TreeModel.findOne({ ownerId: { $eq: "" }, imgUrl: { $exists: true } }, (err, result) => {
+            if (!result.lenght) throw new NoMintableTreeError("There is not more mintable trees in db", err)
+            return result
+        })
     }
     public findAll = async (): Promise<Tree[]> => {
         return TreeModel.find()
