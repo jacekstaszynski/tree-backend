@@ -17,6 +17,6 @@ export default class TreeRouter implements Routes {
         this.router.post(`${this.path}`, this.controller.create);
         this.router.get(`${this.path}/find/:name`, this.controller.findByName);
         this.router.get(`${this.path}/find/:ownerId`, this.controller.findByName);
-        this.router.get(`${this.path}/findAll`, this.controller.findAll);
+        this.router.get(`${this.path}/find-all`, this.controller.findAll);
     }
 }

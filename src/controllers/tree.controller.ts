@@ -1,4 +1,3 @@
-
 import { Tree } from "@/models/tree.model";
 import TreeService from "@/services/tree.service";
 import { NextFunction, Request, Response } from "express";

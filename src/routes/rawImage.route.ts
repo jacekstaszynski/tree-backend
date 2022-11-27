@@ -5,7 +5,7 @@ import { Routes } from "@/interfaces/routes.interface";
 import express from "express";
 
 export default class RawImageRouter implements Routes {
-    public path = "/rawImage";
+    public path = "/raw-image";
     public router = express.Router();
     public controller = new RawImageController()
 
@@ -15,6 +15,6 @@ export default class RawImageRouter implements Routes {
 
     private init() {
         this.router.post(`${this.path}`, this.controller.create);
-        this.router.get(`${this.path}/findAll`, this.controller.findAll);
+        this.router.get(`${this.path}/find-all`, this.controller.findAll);
     }
 }
