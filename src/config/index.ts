@@ -10,5 +10,4 @@ export const {
     LOG_DIR,
     ORIGIN,
     LOG_FORMAT,
-
 } = process.env;

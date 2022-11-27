@@ -15,7 +15,7 @@ export default class RawImageService {
 
         return session.withTransaction(async () => {
             const fragmentation = this.calculateImageFragmentation(rawImage.image)
-            let placement = 1
+            let placement = 0
             let trees = []
             const images = this.divideImage(rawImage.image, fragmentation)
             images.forEach(async image => {
@@ -27,6 +27,7 @@ export default class RawImageService {
                 this.treeService.create(tree)
                     .then((model) => { trees.push(model) })
                     .catch(async (error) => {
+                        // TODO: to be decided later wheather we want to wait for the transaction to be aborted
                         await session.abortTransaction()
                         throw new CreateTreeError(`RawImage:${rawImage} and Tree with  placement:${placement} failed to save`, error)
                     })
