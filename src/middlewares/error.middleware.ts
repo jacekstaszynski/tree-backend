@@ -2,7 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpException } from '@exceptions/HttpException';
 import ErrorInterface from '@/interfaces/error.interface';
 import { logger } from '@typegoose/typegoose/lib/logSettings';
+import CreateTreeException from '@/exceptions/CreateTreeException';
 
+// TODO: adjust to other Exceptions
 const errorMiddleware = (exception: HttpException, req: Request, res: Response, next: NextFunction) => {
     try {
         if (exception.name === "ValidationError") {
@@ -13,6 +15,11 @@ const errorMiddleware = (exception: HttpException, req: Request, res: Response, 
         } else if (exception.name === "MongoServerError") {
             if (exception.message.includes("duplicate key")) {
                 return res.status(406).json({ type: ErrorInterface.DUPLICATION, field: exception.keyValue });
+            }
+        }
+        else if (exception.name === "CreateTreeException") {
+            if (exception.message.includes("failed to save")) {
+                return res.status(406).json({ type: ErrorInterface.UNKNOWN_CREATION, field: exception.keyValue });
             }
         }
         else {

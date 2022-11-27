@@ -1,8 +1,9 @@
 
-
+import CreateTreeException from "@/exceptions/CreateTreeException";
 import RawImageModel, { RawImage } from "@/models/rawImage.model";
 import { Tree } from "@/models/tree.model";
 import { logger } from "@typegoose/typegoose/lib/logSettings";
+import mongoose, { ClientSession } from "mongoose";
 import TreeService from "./tree.service";
 
 
@@ -11,26 +12,38 @@ export default class RawImageService {
     public treeService = new TreeService()
 
     public async create(rawImage: RawImage): Promise<RawImage> {
-        const fragmentation = this.calculateImageFragmentation(rawImage.image)
-        let placement = 1
-        let trees = []
-        const images = this.divideImage(rawImage.image, fragmentation)
-        images.forEach(async image => {
-            let tree: Tree
-            tree.image = image
-            tree.rawImagePlacement = placement
-            placement++
+        let session: ClientSession = await mongoose.startSession()
 
-            this.treeService.create(tree).then((model) => {
-                trees.push()
-            }
-            ).catch((error) => {
-                logger.error(`Tree with with placement: ${placement}, ERROR: ${error}`);
+        return session.withTransaction(async () => {
+            const fragmentation = this.calculateImageFragmentation(rawImage.image)
+            let placement = 1
+            let trees = []
+            // ONLY FOR TESTING PURPOSES
+            let treeFailures = []
+            const images = this.divideImage(rawImage.image, fragmentation)
+            images.forEach(async image => {
+                let tree: Tree
+                tree.image = image
+                tree.rawImagePlacement = placement
+                placement++
+
+                this.treeService.create(tree).then((model) => {
+                    trees.push(model)
+                }
+                ).catch(async (error) => {
+                    logger.error(`Tree with with placement failed to save: ${placement}, ERROR: ${error}`);
+                    treeFailures.push(tree)
+
+                    // await session.abortTransaction()
+                    // throw new CreateTreeException(error)
+                })
             })
+            rawImage.trees = trees
+            return RawImageModel.create({ rawImage }, { session: session })
         })
-        rawImage.trees = trees
-        const model = await RawImageModel.create(rawImage)
-        return model
+            .then(() => session.commitTransaction())
+            .then(() => session.endSession())
+            .then()
     }
 
     public async findAll(): Promise<RawImage[]> {
@@ -38,9 +51,11 @@ export default class RawImageService {
     }
 
     public divideImage(image: Buffer, fragmentation: Number): Buffer[] {
+        // TODO: implement method
         return []
     }
     public calculateImageFragmentation(image: Buffer): Number {
-        return 10
+        // TODO: implement method
+        return 9
     }
 }

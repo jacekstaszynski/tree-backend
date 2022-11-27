@@ -9,7 +9,8 @@ export default class TreeController {
     public create = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const tree: Tree = req.body
-            const model = await this.treeService.create(tree)
+            console.log("###" + tree)
+            const model = await this.treeService.create(tree, null)
             res.status(200).json({ model })
         } catch (error) {
             next(error)

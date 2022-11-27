@@ -7,3 +7,10 @@ export const dbConnection = {
     useUnifiedTopology: true
   },
 };
+
+export let transactionOptions = {
+  readConcern: { level: 'local' },
+  writeConcern: { w: 'majority' },
+  readPreference: { mode: 'primary' },
+  maxCommitTimeMS: 100000
+}

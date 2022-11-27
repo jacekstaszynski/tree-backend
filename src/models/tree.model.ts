@@ -17,7 +17,6 @@ const treeSchema = new Schema<Tree>({
     ownerId: { type: String },
     image: { type: Buffer },
     rawImage: {
-        required: true,
         type: Schema.Types.ObjectId,
         ref: "RawImage"
     }

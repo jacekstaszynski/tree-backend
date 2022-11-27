@@ -1,11 +1,11 @@
-import { HttpException } from "@/exceptions/HttpException";
+
 import TreeModel, { Tree } from "@/models/tree.model"
-import { isEmpty } from "@/utils/util";
+import { ClientSession } from "mongoose"
 
 export default class TreeService {
 
-    public create = async (tree: Tree): Promise<Tree> => {
-        return TreeModel.create(tree)
+    public create = async (tree: Tree, session?: ClientSession): Promise<Tree> => {
+        return TreeModel.create({ tree }, { session: session }).then()
     }
 
     public findAll = async (): Promise<Tree[]> => {

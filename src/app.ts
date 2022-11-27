@@ -39,7 +39,6 @@ class App {
         if (this.env !== 'production') {
             set('debug', true);
         }
-
         connect(dbConnection.url, dbConnection.options as any, () => {
             logger.info('🚀 MongoDB connected ' + dbConnection.url);
             logger.info(`=================================`);
@@ -47,17 +46,18 @@ class App {
     }
 
     private initializeRoutes(routes: Routes[]) {
-        routes.forEach(route => this.express.use('/', route.router));
+        routes.forEach(route => this.express.use('/', route.router))
     }
 
     private initializeMiddlewares() {
-        this.express.use(morgan(LOG_FORMAT, { stream }));
+        this.express.use(morgan(LOG_FORMAT, { stream }))
+        this.express.use(express.json())
         this.express.use((req, res, next) => {
             console.log(`Incomming -> method [${req.method}] - url: [${req.url} - ip: [${req.socket.remoteAddress}]`)
             next();
         })
-        this.express.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
-        this.express.use(express.json());
+        this.express.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }))
+
     }
 }
 
