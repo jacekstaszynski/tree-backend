@@ -15,6 +15,7 @@ export default class TreeRouter implements Routes {
 
     private init() {
         this.router.post(`${this.path}`, this.controller.create);
+        this.router.post(`${this.path}/:ownerId/mint-tree`, this.controller.mintTree);
         this.router.get(`${this.path}/find/:name`, this.controller.findByName);
         this.router.get(`${this.path}/find/:ownerId`, this.controller.findByName);
         this.router.get(`${this.path}/find-all`, this.controller.findAll);

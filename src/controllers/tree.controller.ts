@@ -8,7 +8,16 @@ export default class TreeController {
     public create = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const tree: Tree = req.body
-            const model = await this.treeService.create(tree, null)
+            const model = await this.treeService.create(tree)
+            res.status(200).json({ model })
+        } catch (error) {
+            next(error)
+        }
+    }
+    public mintTree = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const ownerId = req.params.ownerId
+            const model = await this.treeService.mint(ownerId)
             res.status(200).json({ model })
         } catch (error) {
             next(error)

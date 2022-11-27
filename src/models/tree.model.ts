@@ -13,7 +13,7 @@ export interface Tree {
 
 const treeSchema = new Schema<Tree>({
     name: { type: String },
-    imgUrl: { type: String },
+    imgUrl: { type: String, unique: true },
     ownerId: { type: String },
     image: { type: Buffer },
     rawImage: {
@@ -22,5 +22,5 @@ const treeSchema = new Schema<Tree>({
     }
 })
 
-const TreeModel = model<Tree & Document>('Tree', treeSchema)
+const TreeModel = model<Tree & Document>("Tree", treeSchema)
 export default TreeModel

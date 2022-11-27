@@ -1,12 +1,12 @@
-import cors from 'cors';
-import express from 'express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
-import { dbConnection } from '@/databases';
-import errorMiddleware from '@middlewares/error.middleware';
-import { logger, stream } from '@utils/logger';
-import { connect, set } from 'mongoose';
-import { Routes } from './interfaces/routes.interface';
-import morgan from 'morgan';
+import cors from "cors";
+import express from "express";
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from "@config";
+import { dbConnection } from "@/databases";
+import errorMiddleware from "@middlewares/error.middleware";
+import { logger, stream } from "@utils/logger";
+import { connect, set } from "mongoose";
+import { Routes } from "./interfaces/routes.interface";
+import morgan from "morgan";
 
 class App {
     public express: express.Application;
@@ -15,7 +15,7 @@ class App {
 
     constructor(routes: Routes[]) {
         this.express = express();
-        this.env = NODE_ENV || 'development';
+        this.env = NODE_ENV || "development";
         this.port = PORT || 3000;
 
         this.connectToDatabase()
@@ -36,17 +36,17 @@ class App {
     }
 
     private connectToDatabase() {
-        if (this.env !== 'production') {
-            set('debug', true);
+        if (this.env !== "production") {
+            set("debug", true);
         }
         connect(dbConnection.url, dbConnection.options as any, () => {
-            logger.info('🚀 MongoDB connected ' + dbConnection.url);
+            logger.info("🚀 MongoDB connected " + dbConnection.url);
             logger.info(`=================================`);
         });
     }
 
     private initializeRoutes(routes: Routes[]) {
-        routes.forEach(route => this.express.use('/', route.router))
+        routes.forEach(route => this.express.use("/", route.router))
     }
 
     private initializeMiddlewares() {

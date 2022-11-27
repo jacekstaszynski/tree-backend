@@ -1,4 +1,4 @@
-import { DB_HOST, DB_DATABASE } from '@config';
+import { DB_HOST, DB_DATABASE } from "@config";
 
 export const dbConnection = {
   url: `mongodb://${DB_HOST}/${DB_DATABASE}`,
@@ -9,8 +9,8 @@ export const dbConnection = {
 };
 
 export let transactionOptions = {
-  readConcern: { level: 'local' },
-  writeConcern: { w: 'majority' },
-  readPreference: { mode: 'primary' },
+  readConcern: { level: "local" },
+  writeConcern: { w: "majority" },
+  readPreference: { mode: "primary" },
   maxCommitTimeMS: 100000
 }

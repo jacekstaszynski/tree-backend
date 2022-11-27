@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
-import { BaseError } from '@/exceptions/BaseError';
-import { logger } from '@/utils/logger';
-import { StatusCodes } from 'http-status-codes';
+import { NextFunction, Request, Response } from "express";
+import { BaseError } from "@/exceptions/BaseError";
+import { logger } from "@/utils/logger";
+import { StatusCodes } from "http-status-codes";
 
 const errorMiddleware = (exception: BaseError, req: Request, res: Response, next: NextFunction) => {
     try {
@@ -23,7 +23,7 @@ const errorMiddleware = (exception: BaseError, req: Request, res: Response, next
             return res.status(exception.statusCode || 500)
                 .json({ type: exception.constructor.name, message: exception.message || "Unknown exception" })
         }
-        return res.status(500).json({ message: 'Unknown exception' });
+        return res.status(500).json({ message: "Unknown exception" });
     } catch (error) {
         next(error);
     }

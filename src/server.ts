@@ -11,8 +11,8 @@ const app = new App([new TreeRouter(), new RawImageRouter()]);
 
 TreeModel.find().then((trees) => { console.log("###" + trees) })
 
-app.express.get('/', (req, res) => {
-    res.send('hello world')
+app.express.get("/", (req, res) => {
+    res.send("hello world")
 })
 app.listen();
 
