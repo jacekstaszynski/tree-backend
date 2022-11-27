@@ -2,7 +2,7 @@ describe("tree integration test", () => {
     it("should create new tree", () => {
         // TODO: implement
     })
-    it("should find trees by name/ownerId and all trees", () => {
+    it("should find trees by ownerId and all trees", () => {
         // TODO: implement
     })
     it("should update tree by ownerId and set proper imageUrl", () => {

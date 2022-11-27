@@ -33,16 +33,6 @@ export default class TreeController {
         }
     }
 
-    public findByName = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const name = req.params.name
-            const models = await this.treeService.findByName(name)
-            res.status(200).json({ models })
-        } catch (error) {
-            next(error)
-        }
-    }
-
     public findByOwner = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const ownerId = req.params.ownerId
